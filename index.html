@@ -136,6 +136,19 @@
   .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.1em;color:var(--gold);}
   .footer-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.9rem;color:var(--muted);}
 
+  /* HAMBURGER */
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
+  .hamburger span{display:block;width:24px;height:2px;background:var(--cream);transition:all 0.3s;}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  .mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(10,10,10,0.98);z-index:99;flex-direction:column;justify-content:center;align-items:center;gap:2.5rem;}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:0.1em;color:var(--cream);text-decoration:none;transition:color 0.3s;}
+  .mobile-menu a:hover{color:var(--gold);}
+  .mobile-menu-socials{display:flex;gap:1.5rem;margin-top:1rem;}
+  .mobile-menu-socials a{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);text-decoration:none;opacity:0.7;}
+
   @keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
   @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
   .reveal{opacity:0;transform:translateY(40px);transition:opacity 0.8s ease,transform 0.8s ease;}
@@ -146,22 +159,55 @@
   .reveal-delay-4{transition-delay:0.4s;}
 
   @media(max-width:900px){
-    nav{padding:1.5rem;} .nav-links{display:none;}
-    .hero{grid-template-columns:1fr;min-height:auto;}
-    .hero-left{padding:7rem 1.5rem 3rem;}
-    .hero-right{height:60vw;max-height:400px;}
-    .hero-photo-overlay{background:linear-gradient(to bottom,var(--black) 0%,transparent 20%,transparent 70%,var(--black) 100%);}
-    .origin,.signature-grid,.delivery-inner{grid-template-columns:1fr;gap:3rem;padding:5rem 1.5rem;}
-    .offering{padding:5rem 1.5rem;} .offering-header{grid-template-columns:1fr;gap:2rem;}
-    .pillars{grid-template-columns:1fr 1fr;}
-    .clients{padding:5rem 1.5rem;} .clients-grid{grid-template-columns:1fr;}
-    .gallery-section{padding:5rem 1.5rem;}
-    .gallery-grid{grid-template-columns:1fr 1fr;}
-    .g-tall{grid-row:span 1;}
-    .cta-section{padding:6rem 1.5rem;}
+    /* NAV */
+    nav{padding:1.25rem 1.5rem;}
+    .nav-links{display:none;}
+    .follow-dropdown{display:none;}
+    .hamburger{display:flex;}
+
+    /* HERO */
+    .hero{grid-template-columns:1fr;min-height:100vh;position:relative;}
+    .hero-right{position:absolute;inset:0;height:100%;max-height:none;z-index:0;opacity:0.35;}
+    .hero-photo-overlay{background:linear-gradient(to bottom,rgba(10,10,10,0.5) 0%,rgba(10,10,10,0.3) 40%,rgba(10,10,10,0.7) 100%);}
+    .hero-left{position:relative;z-index:1;padding:8rem 1.5rem 4rem;justify-content:flex-end;min-height:100vh;}
+    .hero-title{font-size:clamp(4rem,18vw,7rem);}
+    .hero-sub{font-size:1.1rem;}
+    .hero-cta-group{flex-direction:column;align-items:flex-start;gap:1rem;}
+    .btn-primary,.btn-ghost{width:100%;text-align:center;}
+
+    /* SECTIONS */
+    .origin{grid-template-columns:1fr;gap:3rem;padding:4rem 1.5rem;}
+    .offering{padding:4rem 1.5rem;}
+    .offering-header{grid-template-columns:1fr;gap:2rem;}
+    .pillars{grid-template-columns:1fr;}
+    .signature{padding:4rem 1.5rem;}
+    .signature-grid{grid-template-columns:1fr;gap:3rem;}
+    .clients{padding:4rem 1.5rem;}
+    .clients-grid{grid-template-columns:1fr;gap:1.5rem;}
+    .delivery{padding:4rem 1.5rem;}
+    .delivery-inner{grid-template-columns:1fr;gap:3rem;}
+    .cta-section{padding:5rem 1.5rem;}
+
+    /* GALLERY — single column on mobile, fixed heights */
+    .gallery-section{padding:4rem 1.5rem;}
+    .gallery-grid{grid-template-columns:1fr;grid-template-rows:none;}
+    .gallery-item{height:260px !important;grid-row:span 1 !important;grid-column:span 1 !important;}
+    .g-tall,.g-wide,.g-short{height:260px;grid-row:span 1;grid-column:span 1;}
+
+    /* FOOTER */
     footer{flex-direction:column;gap:1rem;text-align:center;padding:2rem 1.5rem;}
-    .delivery{padding:5rem 1.5rem;} .signature{padding:5rem 1.5rem;}
+
+    /* MISC */
     .scroll-indicator{display:none;}
+    .cursor,.cursor-ring{display:none;}
+  }
+
+  @media(max-width:480px){
+    .hero-title{font-size:clamp(3.5rem,15vw,5rem);}
+    .section-title{font-size:clamp(2.2rem,10vw,3.5rem);}
+    .cta-title{font-size:clamp(2.5rem,12vw,4rem);}
+    .pillars{grid-template-columns:1fr;}
+    .gallery-item{height:220px !important;}
   }
 </style>
 </head>
@@ -189,7 +235,25 @@
       <a href="http://www.tiktok.com/@iamdjmonae1" target="_blank">TikTok</a>
     </div>
   </div>
+  <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- Mobile full-screen menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#origin" class="mobile-nav-link">Story</a>
+  <a href="#offering" class="mobile-nav-link">Offering</a>
+  <a href="#style" class="mobile-nav-link">Style</a>
+  <a href="#clients" class="mobile-nav-link">Events</a>
+  <a href="#gallery" class="mobile-nav-link">Gallery</a>
+  <a href="#book" class="mobile-nav-link">Book</a>
+  <div class="mobile-menu-socials">
+    <a href="https://www.instagram.com/iamdjmonae1/" target="_blank">Instagram</a>
+    <a href="https://www.youtube.com/@djmonae/featured" target="_blank">YouTube</a>
+    <a href="http://www.tiktok.com/@iamdjmonae1" target="_blank">TikTok</a>
+  </div>
+</div>
 
 <section class="hero">
   <div class="hero-bg"></div>
@@ -365,7 +429,7 @@
   <div class="cta-buttons reveal reveal-delay-3">
     <a href="https://form.typeform.com/to/m1XHJ5BF?typeform-source=www.canva.com" target="_blank" class="btn-primary">Start Consultation</a>
   </div>
-  <p class="cta-email reveal" style="margin-top:2.5rem;">Or reach out directly: <a href="mailto:djmonae804@gmail.com">djmonae804@gmail.com</a></p>
+  <p class="cta-email reveal" style="margin-top:2.5rem;">Or reach out directly: <a href="/cdn-cgi/l/email-protection#f296989f9d9c9397cac2c6b2959f939b9edc919d9f"><span class="__cf_email__" data-cfemail="5c38363133323d39646c681c3b313d3530723f3331">[email&#160;protected]</span></a></p>
 </section>
 
 <footer>
@@ -379,7 +443,7 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const cursor=document.getElementById('cursor'),cursorRing=document.getElementById('cursorRing');
   let mx=0,my=0,rx=0,ry=0;
   document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=(mx-6)+'px';cursor.style.top=(my-6)+'px';});
@@ -390,9 +454,25 @@
   const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
   reveals.forEach(el=>observer.observe(el));
   window.addEventListener('scroll',()=>{const nav=document.querySelector('nav');if(window.scrollY>80){nav.style.background='rgba(10,10,10,0.95)';nav.style.backdropFilter='blur(10px)';}else{nav.style.background='';nav.style.backdropFilter='';}});
+  // Follow dropdown close on outside click
   document.addEventListener('click', e => {
     const dd = document.querySelector('.follow-dropdown');
     if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+  });
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
   });
 </script>
 </body>
