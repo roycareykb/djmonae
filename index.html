@@ -791,6 +791,7 @@
     <li><a href="#style">Style</a></li>
     <li><a href="#clients">Events</a></li>
     <li><a href="#book">Book</a></li>
+    <li><a href="https://www.instagram.com/iamdjmonae1/" target="_blank">Instagram ↗</a></li>
   </ul>
 </nav>
 
@@ -1002,6 +1003,88 @@
 </section>
 
 <!-- BOOKING CTA -->
+<!-- PHOTO GALLERY -->
+<section class="gallery-section" id="gallery">
+  <div style="padding: 8rem 3rem;">
+    <div class="section-label reveal">06 — In the Mix</div>
+    <h2 class="clients-title reveal reveal-delay-1" style="margin-bottom: 3rem;">Behind the<br>Decks</h2>
+
+    <!-- Upload prompt / placeholder grid -->
+    <div class="gallery-grid">
+      <div class="gallery-item tall reveal">
+        <img src="photo1.jpg" alt="DJ Monae in the mix">
+      </div>
+      <div class="gallery-item reveal reveal-delay-1">
+        <img src="photo5.jpg" alt="DJ Monae performing">
+      </div>
+      <div class="gallery-item reveal reveal-delay-2">
+        <img src="photo2.jpg" alt="DJ Monae at the decks">
+      </div>
+      <div class="gallery-item wide reveal reveal-delay-1">
+        <img src="photo3.jpg" alt="DJ Monae event">
+      </div>
+      <div class="gallery-item reveal reveal-delay-3">
+        <img src="photo4.jpg" alt="DJ Monae performing live">
+      </div>
+      <div class="gallery-item reveal reveal-delay-2">
+        <img src="photo6.jpg" alt="DJ Monae experience">
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top: 3rem;" class="reveal">
+      <a href="https://www.instagram.com/iamdjmonae1/" target="_blank" class="btn-ghost" style="display:inline-flex; align-items:center; gap:0.75rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+        Follow @iamdjmonae1
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 320px 320px;
+  gap: 1rem;
+}
+.gallery-item { overflow: hidden; background: #111; }
+.gallery-item.tall { grid-row: span 2; }
+.gallery-item.wide { grid-column: span 2; }
+.gallery-placeholder {
+  width: 100%; height: 100%; min-height: inherit;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 0.75rem;
+  border: 1px dashed rgba(201,168,76,0.2);
+  color: rgba(201,168,76,0.3);
+  transition: border-color 0.3s;
+}
+.gallery-placeholder:hover { border-color: rgba(201,168,76,0.5); }
+.gallery-icon { font-size: 2rem; opacity: 0.4; }
+.gallery-hint {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+/* When real images are added */
+.gallery-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.gallery-item:hover img { transform: scale(1.04); }
+@media (max-width: 900px) {
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-item.tall { grid-row: span 1; }
+  .gallery-item.wide { grid-column: span 2; }
+}
+@media (max-width: 600px) {
+  .gallery-grid { grid-template-columns: 1fr; }
+  .gallery-item.tall, .gallery-item.wide { grid-row: span 1; grid-column: span 1; }
+}
+</style>
+
 <section class="cta-section" id="book">
   <div class="cta-bg-text">BOOK</div>
   <div class="cta-label reveal">Ready?</div>
@@ -1010,20 +1093,23 @@
   </h2>
   <p class="cta-text reveal reveal-delay-2">The DJ you book when you want an experience instead of a playlist. Let's talk about your event.</p>
   <div class="cta-buttons reveal reveal-delay-3">
-    <a href="mailto:djmonae804@gmail.com?subject=Event%20Booking%20Inquiry" class="btn-primary">Start Consultation</a>
-    <a href="mailto:djmonae804@gmail.com" class="btn-ghost">Send a Direct Inquiry</a>
+    <a href="https://form.typeform.com/to/m1XHJ5BF?typeform-source=www.canva.com" target="_blank" class="btn-primary">Start Consultation</a>
+    <a href="/cdn-cgi/l/email-protection#a0c4cacdcfcec1c5989094e0c7cdc1c9cc8ec3cfcd" class="btn-ghost">Send a Direct Inquiry</a>
   </div>
-  <p class="cta-email reveal" style="margin-top: 2.5rem;">Or reach out directly: <a href="mailto:djmonae804@gmail.com">djmonae804@gmail.com</a></p>
+  <p class="cta-email reveal" style="margin-top: 2.5rem;">Or reach out directly: <a href="/cdn-cgi/l/email-protection#d3b7b9bebcbdb2b6ebe3e793b4beb2babffdb0bcbe"><span class="__cf_email__" data-cfemail="55313f383a3b34306d6561153238343c397b363a38">[email&#160;protected]</span></a></p>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">DJ Monae</div>
   <div class="footer-tagline">Experience over playlist.</div>
-  <div class="footer-copy">© 2025 DJ Monae — All Rights Reserved</div>
+  <div style="display:flex; align-items:center; gap:1.5rem;">
+    <a href="https://www.instagram.com/iamdjmonae1/" target="_blank" style="color: var(--gold); opacity:0.7; transition: opacity 0.3s; text-decoration:none; font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7">Instagram ↗</a>
+    <div class="footer-copy">© 2025 DJ Monae</div>
+  </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Custom cursor
   const cursor = document.getElementById('cursor');
   const cursorRing = document.getElementById('cursorRing');
@@ -1056,27 +1142,4 @@
   });
 
   // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.12 });
-  reveals.forEach(el => observer.observe(el));
-
-  // Nav scroll effect
-  const nav = document.querySelector('nav');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 80) {
-      nav.style.background = 'rgba(10,10,10,0.95)';
-      nav.style.backdropFilter = 'blur(10px)';
-    } else {
-      nav.style.background = '';
-      nav.style.backdropFilter = '';
-    }
-  });
-</script>
-</body>
-</html>
+  const reveal
