@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DJ Monae — Experience Over Playlist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --deep: #111111;
+    --gold: #C9A84C;
+    --gold-light: #e8c97a;
+    --cream: #F5F0E8;
+    --warm-white: #faf8f3;
+    --muted: #888880;
+    --accent: #8B2FC9;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom Cursor */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.35s cubic-bezier(0.23,1,0.32,1);
+    opacity: 0.5;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    mix-blend-mode: normal;
+  }
+  nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.9) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-decoration: none;
+    position: relative;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+    position: relative;
+  }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.3s, color 0.3s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 3rem 5rem;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(139,47,201,0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 50% at 20% 80%, rgba(201,168,76,0.08) 0%, transparent 60%),
+                var(--black);
+  }
+
+  /* Equalizer bars animation */
+  .eq-bars {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    padding: 0 2rem 0 0;
+    opacity: 0.06;
+  }
+  .eq-bar {
+    flex: 1;
+    background: var(--gold);
+    border-radius: 2px 2px 0 0;
+    animation: eq-animate var(--dur, 1.2s) ease-in-out infinite alternate;
+    transform-origin: bottom;
+  }
+  @keyframes eq-animate {
+    from { transform: scaleY(0.1); }
+    to { transform: scaleY(1); }
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 15vw, 14rem);
+    line-height: 0.88;
+    letter-spacing: 0.02em;
+    color: var(--cream);
+    opacity: 0;
+    animation: fadeUp 0.9s 0.5s forwards;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-title em {
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    margin-top: 2rem;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-style: italic;
+    color: var(--cream);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+    max-width: 480px;
+    line-height: 1.4;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-cta-group {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 400;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--cream);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2.5rem;
+    right: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.4;
+    animation: fadeUp 1s 1.4s forwards;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: var(--gold);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(0.5); }
+  }
+
+  /* SECTIONS COMMON */
+  section { position: relative; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+
+  /* ORIGIN SECTION */
+  .origin {
+    padding: 8rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    background: var(--deep);
+  }
+
+  .origin-left { }
+
+  .origin-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: 0.03em;
+    margin-bottom: 2rem;
+  }
+  .origin-title span { color: var(--gold); }
+
+  .origin-text {
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: rgba(245,240,232,0.8);
+    font-weight: 300;
+  }
+  .origin-text + .origin-text { margin-top: 1.5rem; }
+
+  .origin-right {
+    position: relative;
+  }
+
+  .mission-card {
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .mission-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+  .mission-card::after {
+    content: '';
+    position: absolute;
+    bottom: -50px; right: -50px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+  }
+  .mission-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
+  }
+  .mission-text {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--cream);
+  }
+
+  /* OFFERING / PILLARS */
+  .offering {
+    padding: 8rem 3rem;
+  }
+
+  .offering-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    margin-bottom: 5rem;
+  }
+
+  .offering-intro {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.7);
+    font-weight: 300;
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(201,168,76,0.1);
+  }
+
+  .pillar {
+    background: var(--black);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .pillar:hover { background: rgba(201,168,76,0.04); }
+  .pillar:hover .pillar-num { opacity: 1; }
+
+  .pillar-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    color: rgba(201,168,76,0.08);
+    position: absolute;
+    top: 1rem; right: 1rem;
+    line-height: 1;
+    opacity: 0.5;
+    transition: opacity 0.4s;
+  }
+
+  .pillar-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .pillar-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.06em;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+
+  .pillar-text {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.6);
+    font-weight: 300;
+  }
+
+  /* SIGNATURE STYLE */
+  .signature {
+    padding: 8rem 3rem;
+    background: var(--deep);
+  }
+
+  .signature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .signature-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    line-height: 1;
+    margin-bottom: 2rem;
+  }
+
+  .style-elements {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .style-item {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    transition: padding-left 0.3s;
+  }
+  .style-item:hover { padding-left: 0.5rem; }
+
+  .style-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin-top: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .style-content-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+
+  .style-content-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(245,240,232,0.7);
+    font-weight: 300;
+  }
+
+  .signature-quote {
+    margin-top: 4rem;
+    padding: 2.5rem;
+    border-left: 2px solid var(--gold);
+    background: rgba(201,168,76,0.03);
+  }
+  .signature-quote p {
+    font-size: 1.1rem;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--cream);
+  }
+  .signature-quote cite {
+    display: block;
+    margin-top: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-style: normal;
+    opacity: 0.7;
+  }
+
+  /* CLIENTS */
+  .clients {
+    padding: 8rem 3rem;
+  }
+
+  .clients-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5rem);
+    line-height: 1;
+    margin-bottom: 4rem;
+    max-width: 600px;
+  }
+
+  .clients-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .client-card {
+    padding: 3rem 2.5rem;
+    border: 1px solid rgba(245,240,232,0.08);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.4s, transform 0.4s;
+  }
+  .client-card:hover {
+    border-color: rgba(201,168,76,0.3);
+    transform: translateY(-4px);
+  }
+  .client-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .client-card:hover::after { transform: scaleX(1); }
+
+  .client-type {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .client-venue {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+
+  .client-desc {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.6);
+    font-weight: 300;
+  }
+
+  /* EXPERIENCE DELIVERY */
+  .delivery {
+    padding: 8rem 3rem;
+    background: var(--deep);
+  }
+
+  .delivery-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+  }
+
+  .delivery-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+
+  .delivery-intro {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.7);
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+  }
+
+  .deliverables {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .deliverable {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(245,240,232,0.06);
+    transition: all 0.3s;
+  }
+  .deliverable:hover { padding-left: 0.75rem; }
+
+  .deliverable-arrow {
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .deliverable-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(245,240,232,0.75);
+  }
+
+  /* BOOKING CTA */
+  .cta-section {
+    padding: 10rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(139,47,201,0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 50% 50%, rgba(201,168,76,0.05) 0%, transparent 50%);
+  }
+
+  .cta-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(8rem, 20vw, 22rem);
+    color: rgba(201,168,76,0.03);
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 0.05em;
+  }
+
+  .cta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .cta-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    line-height: 0.95;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .cta-title em {
+    color: var(--gold);
+    font-style: normal;
+    display: block;
+  }
+
+  .cta-text {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: rgba(245,240,232,0.6);
+    margin-bottom: 3.5rem;
+    position: relative;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .cta-email {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-top: 2.5rem;
+    position: relative;
+  }
+  .cta-email a { color: var(--gold); text-decoration: none; }
+  .cta-email a:hover { text-decoration: underline; }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem;
+    border-top: 1px solid rgba(245,240,232,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    color: rgba(136,136,128,0.5);
+    text-transform: uppercase;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    nav { padding: 1.5rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 0 1.5rem 4rem; }
+    .origin, .signature-grid, .delivery-inner {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      padding: 5rem 1.5rem;
+    }
+    .offering { padding: 5rem 1.5rem; }
+    .offering-header { grid-template-columns: 1fr; gap: 2rem; }
+    .pillars { grid-template-columns: 1fr 1fr; }
+    .clients { padding: 5rem 1.5rem; }
+    .clients-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .cta-section { padding: 6rem 1.5rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
+    .delivery { padding: 5rem 1.5rem; }
+    .signature { padding: 5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">DJ Monae</a>
+  <ul class="nav-links">
+    <li><a href="#origin">Story</a></li>
+    <li><a href="#offering">Offering</a></li>
+    <li><a href="#style">Style</a></li>
+    <li><a href="#clients">Events</a></li>
+    <li><a href="#book">Book</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Equalizer bars decoration -->
+  <div class="eq-bars" aria-hidden="true">
+    <div class="eq-bar" style="--dur:0.8s; height:55%"></div>
+    <div class="eq-bar" style="--dur:1.4s; height:80%"></div>
+    <div class="eq-bar" style="--dur:0.6s; height:45%"></div>
+    <div class="eq-bar" style="--dur:1.1s; height:90%"></div>
+    <div class="eq-bar" style="--dur:0.9s; height:60%"></div>
+    <div class="eq-bar" style="--dur:1.3s; height:75%"></div>
+    <div class="eq-bar" style="--dur:0.7s; height:50%"></div>
+    <div class="eq-bar" style="--dur:1.0s; height:85%"></div>
+    <div class="eq-bar" style="--dur:1.5s; height:40%"></div>
+    <div class="eq-bar" style="--dur:0.85s; height:70%"></div>
+    <div class="eq-bar" style="--dur:1.2s; height:65%"></div>
+    <div class="eq-bar" style="--dur:0.75s; height:95%"></div>
+    <div class="eq-bar" style="--dur:1.35s; height:55%"></div>
+    <div class="eq-bar" style="--dur:0.65s; height:80%"></div>
+    <div class="eq-bar" style="--dur:1.0s; height:48%"></div>
+    <div class="eq-bar" style="--dur:0.95s; height:72%"></div>
+    <div class="eq-bar" style="--dur:1.25s; height:88%"></div>
+    <div class="eq-bar" style="--dur:0.8s; height:62%"></div>
+    <div class="eq-bar" style="--dur:1.15s; height:35%"></div>
+    <div class="eq-bar" style="--dur:0.7s; height:78%"></div>
+  </div>
+
+  <div class="hero-tag">Richmond, VA — Est. Since the First Drop</div>
+  <h1 class="hero-title">DJ<br><em>Monae</em></h1>
+  <p class="hero-sub">The DJ you book when you want an experience instead of a playlist.</p>
+  <div class="hero-cta-group">
+    <a href="#book" class="btn-primary">Book an Event</a>
+    <a href="#origin" class="btn-ghost">Discover the Story</a>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ORIGIN -->
+<section class="origin" id="origin">
+  <div class="origin-left">
+    <div class="section-label reveal">01 — Origin</div>
+    <h2 class="origin-title reveal reveal-delay-1">Musical<br><span>Inheritance</span></h2>
+    <p class="origin-text reveal reveal-delay-2">Music isn't just what DJ Monae does — it's her inheritance. Born into a family of musical excellence, she carries the DNA of her father, a touring musician who opened for legends like Midnight Star, who introduced her to the stage before she could even walk. From sitting on his lap at the piano to humming melodies down the hallway, music was never just background noise — it was home.</p>
+    <p class="origin-text reveal reveal-delay-3">Her mother, the spiritual anchor of the family, rooted DJ Monae in the church, where she first discovered the power of her voice. There, she learned that music was more than performance — it was expression, healing, connection. From gospel harmonies to soul-stirring sets, DJ Monae doesn't just play music — she lives it.</p>
+  </div>
+  <div class="origin-right reveal reveal-delay-2">
+    <div class="mission-card">
+      <div class="mission-label">Mission</div>
+      <p class="mission-text">"To create transformative musical experiences that connect souls, move bodies, and unify communities through the healing power of sound and authentic human connection."</p>
+    </div>
+  </div>
+</section>
+
+<!-- OFFERING / PILLARS -->
+<section class="offering" id="offering">
+  <div class="offering-header">
+    <div>
+      <div class="section-label reveal">02 — Offering</div>
+      <h2 class="origin-title reveal reveal-delay-1" style="font-size: clamp(2.5rem, 5vw, 4.5rem);">What She<br>Brings</h2>
+    </div>
+    <p class="offering-intro reveal reveal-delay-2">DJ Monae delivers more than music — she creates transformative experiences through authentic energy curation and intuitive crowd mastery. Her professional approach architects complete journeys from setup to finale, while her understanding of music as healing frequency ensures guests leave feeling genuinely renewed and connected.</p>
+  </div>
+
+  <div class="pillars">
+    <div class="pillar reveal">
+      <div class="pillar-num">01</div>
+      <div class="pillar-icon">✦</div>
+      <div class="pillar-title">Authentic<br>Vibe Curator</div>
+      <p class="pillar-text">Reading the room isn't a skill — it's an instinct. Every set is shaped by the living energy of the crowd in real time.</p>
+    </div>
+    <div class="pillar reveal reveal-delay-1">
+      <div class="pillar-num">02</div>
+      <div class="pillar-icon">◈</div>
+      <div class="pillar-title">Crowd<br>Alchemist</div>
+      <p class="pillar-text">Transforming strangers into a community through music, movement, and the magnetic pull of the right song at the right moment.</p>
+    </div>
+    <div class="pillar reveal reveal-delay-2">
+      <div class="pillar-num">03</div>
+      <div class="pillar-icon">◉</div>
+      <div class="pillar-title">Experience<br>Architect</div>
+      <p class="pillar-text">Every event is designed — from pre-event consultation to final track. A complete journey, not a random shuffle.</p>
+    </div>
+    <div class="pillar reveal reveal-delay-3">
+      <div class="pillar-num">04</div>
+      <div class="pillar-icon">∞</div>
+      <div class="pillar-title">Healing<br>Frequency Keeper</div>
+      <p class="pillar-text">Sound is medicine. Every set leaves guests feeling renewed, connected, and more alive than when they arrived.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNATURE STYLE -->
+<section class="signature" id="style">
+  <div class="signature-grid">
+    <div>
+      <div class="section-label reveal">03 — Signature Style</div>
+      <h2 class="signature-title reveal reveal-delay-1">The Sound<br>of <em style="color: var(--gold); font-style: normal;">Monae</em></h2>
+
+      <div class="style-elements">
+        <div class="style-item reveal reveal-delay-2">
+          <div class="style-dot"></div>
+          <div>
+            <div class="style-content-label">Foundation</div>
+            <div class="style-content-text">808 beats and bass-heavy tracks that make bodies move instinctively — the backbone of every set.</div>
+          </div>
+        </div>
+        <div class="style-item reveal reveal-delay-3">
+          <div class="style-dot"></div>
+          <div>
+            <div class="style-content-label">Genre Fluency</div>
+            <div class="style-content-text">Top 40, R&B, with the ability to blend unexpected elements across genres without ever losing the thread.</div>
+          </div>
+        </div>
+        <div class="style-item reveal">
+          <div class="style-dot"></div>
+          <div>
+            <div class="style-content-label">Mixing Philosophy</div>
+            <div class="style-content-text">Seamless transitions that feel like musical conversations — never jarring, always purposeful.</div>
+          </div>
+        </div>
+        <div class="style-item reveal reveal-delay-1">
+          <div class="style-dot"></div>
+          <div>
+            <div class="style-content-label">The Unexpected</div>
+            <div class="style-content-text">Beyoncé's "Plastic Off the Sofa" into DeBarge's "I Like It" — signature combinations that become the moment everyone talks about.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="signature-quote reveal reveal-delay-2">
+        <p>Custom lighting, branded signage, cohesive aesthetic. DJ Monae commands attention through authenticity rather than flashiness — transforming any space into a home party atmosphere where everyone belongs.</p>
+        <cite>— The DJ Monae Aesthetic</cite>
+      </div>
+
+      <div style="margin-top: 2rem; padding: 2rem; border: 1px solid rgba(201,168,76,0.15); reveal">
+        <div class="mission-label" style="margin-bottom: 1rem;">Conversational MC Style</div>
+        <p style="font-size: 0.95rem; line-height: 1.7; color: rgba(245,240,232,0.65); font-weight: 300;">DJ Monae's approach combines natural engagement with professional visual presentation. Interactive elements like her signature song request system create community and expand musical discovery throughout each event.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section class="clients" id="clients">
+  <div class="section-label reveal">04 — Clientele</div>
+  <h2 class="clients-title reveal reveal-delay-1">Experience<br>Seekers Only</h2>
+
+  <div class="clients-grid">
+    <div class="client-card reveal">
+      <div class="client-type">Upscale Venues</div>
+      <div class="client-venue">Restaurants · Cafes · Bars · Special Events</div>
+      <p class="client-desc">Establishments that value professionalism and client experience over just filling the room with noise. Venues where the atmosphere is part of the offer.</p>
+    </div>
+    <div class="client-card reveal reveal-delay-1">
+      <div class="client-type">Private Celebrations</div>
+      <div class="client-venue">Weddings · Birthdays · Milestone Moments</div>
+      <p class="client-desc">Hosts who understand the difference between background music and community creation. Your most important moments deserve more than a playlist.</p>
+    </div>
+    <div class="client-card reveal reveal-delay-2">
+      <div class="client-type">Corporate Events</div>
+      <div class="client-venue">Team Building · Company Celebrations</div>
+      <p class="client-desc">Organizations wanting memorable experiences that actually bring teams together — not just an obligation checked off the event planning list.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DELIVERY / WHAT CLIENTS RECEIVE -->
+<section class="delivery" id="delivery">
+  <div class="delivery-inner">
+    <div>
+      <div class="section-label reveal">05 — The Experience</div>
+      <h2 class="delivery-title reveal reveal-delay-1">What You<br>Receive</h2>
+      <p class="delivery-intro reveal reveal-delay-2">From first consultation to final song, every detail is intentional. This is what booking DJ Monae actually looks like.</p>
+    </div>
+
+    <div class="deliverables">
+      <div class="deliverable reveal">
+        <span class="deliverable-arrow">→</span>
+        <span class="deliverable-text">Pre-event consultation to understand your vision and crowd dynamics — no guessing, no generic sets</span>
+      </div>
+      <div class="deliverable reveal reveal-delay-1">
+        <span class="deliverable-arrow">→</span>
+        <span class="deliverable-text">A curated musical journey that evolves throughout your event, building and releasing energy with intention</span>
+      </div>
+      <div class="deliverable reveal reveal-delay-2">
+        <span class="deliverable-arrow">→</span>
+        <span class="deliverable-text">Professional setup with signature lighting and visual elements that elevate your space</span>
+      </div>
+      <div class="deliverable reveal reveal-delay-3">
+        <span class="deliverable-arrow">→</span>
+        <span class="deliverable-text">Authentic crowd engagement that feels natural, never forced — real connection, not performance</span>
+      </div>
+      <div class="deliverable reveal">
+        <span class="deliverable-arrow">→</span>
+        <span class="deliverable-text">Reliable, punctual service that reflects positively on you and your event, every single time</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING CTA -->
+<section class="cta-section" id="book">
+  <div class="cta-bg-text">BOOK</div>
+  <div class="cta-label reveal">Ready?</div>
+  <h2 class="cta-title reveal reveal-delay-1">
+    Create an<br><em>Unforgettable</em><br>Experience
+  </h2>
+  <p class="cta-text reveal reveal-delay-2">The DJ you book when you want an experience instead of a playlist. Let's talk about your event.</p>
+  <div class="cta-buttons reveal reveal-delay-3">
+    <a href="mailto:djmonae804@gmail.com?subject=Event%20Booking%20Inquiry" class="btn-primary">Start Consultation</a>
+    <a href="mailto:djmonae804@gmail.com" class="btn-ghost">Send a Direct Inquiry</a>
+  </div>
+  <p class="cta-email reveal" style="margin-top: 2.5rem;">Or reach out directly: <a href="mailto:djmonae804@gmail.com">djmonae804@gmail.com</a></p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">DJ Monae</div>
+  <div class="footer-tagline">Experience over playlist.</div>
+  <div class="footer-copy">© 2025 DJ Monae — All Rights Reserved</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = (mx - 6) + 'px';
+    cursor.style.top = (my - 6) + 'px';
+  });
+
+  function animateCursor() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    cursorRing.style.left = (rx - 18) + 'px';
+    cursorRing.style.top = (ry - 18) + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'scale(2.5)';
+      cursorRing.style.transform = 'scale(1.5)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'scale(1)';
+      cursorRing.style.transform = 'scale(1)';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav scroll effect
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) {
+      nav.style.background = 'rgba(10,10,10,0.95)';
+      nav.style.backdropFilter = 'blur(10px)';
+    } else {
+      nav.style.background = '';
+      nav.style.backdropFilter = '';
+    }
+  });
+</script>
+</body>
+</html>
